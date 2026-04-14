@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tennis Muscle Activation Diagram</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f3f8; color: #1a1a2e; }
+
+header {
+  background: linear-gradient(135deg, #1a2744 0%, #0f3460 100%);
+  color: white;
+  padding: 22px 30px 18px;
+  text-align: center;
+}
+header h1 { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; }
+header p { font-size: 12px; color: #a8c0d4; margin-top: 5px; }
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 12px 20px;
+  background: #fff;
+  border-bottom: 2px solid #dce3ef;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.tab-btn {
+  padding: 8px 15px;
+  border: 1.5px solid #c5cfe0;
+  background: #f5f7fb;
+  cursor: pointer;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.18s;
+  color: #334;
+}
+.tab-btn:hover { background: #e4eaf5; border-color: #1a2744; color: #1a2744; }
+.tab-btn.active { background: #1a2744; color: white; border-color: #1a2744; }
+
+.main-container { max-width: 1200px; margin: 0 auto; padding: 20px 16px; }
+
+.diagram-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.body-panel {
+  background: white;
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  text-align: center;
+}
+.body-panel h3 {
+  font-size: 11px;
+  color: #778;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+.dom-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #e63946;
+  font-weight: 600;
+  margin-bottom: 2px;
+  padding: 0 2px;
+}
+
+.side-panels {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 200px;
+  max-width: 220px;
+}
+
+.legend-panel, .info-panel {
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+.panel-title {
+  font-size: 10px;
+  color: #778;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 7px;
+  font-size: 12px;
+  color: #334;
+}
+.legend-swatch {
+  width: 20px;
+  height: 16px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+.legend-swatch.high    { background: #e63946; }
+.legend-swatch.medium  { background: #f4a261; }
+.legend-swatch.low     { background: #f9c74f; }
+.legend-swatch.none    { background: #e0e0e0; }
+
+.abbr-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 8px;
+  font-size: 10.5px;
+  line-height: 1.8;
+  color: #556;
+}
+.abbr-grid b { color: #334; }
+
+.notes-panel {
+  background: white;
+  border-radius: 14px;
+  padding: 18px 22px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  margin-top: 14px;
+}
+.notes-panel h3 {
+  font-size: 15px;
+  color: #1a2744;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+.notes-panel .desc { font-size: 13px; line-height: 1.65; color: #445; margin-bottom: 12px; }
+.notes-panel .highlights-row { display: flex; flex-wrap: wrap; gap: 20px; }
+.highlights-col h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; font-weight: 600; }
+.highlights-col.primary h4   { color: #c0392b; }
+.highlights-col.secondary h4 { color: #d35400; }
+.highlights-col.minor h4     { color: #b7950b; }
+
+.muscle-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.muscle-tag {
+  padding: 3px 9px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.muscle-tag.primary   { background: #fce4e6; color: #c0392b; }
+.muscle-tag.secondary { background: #fdebd0; color: #d35400; }
+.muscle-tag.minor     { background: #fef9e7; color: #9a7d0a; }
+
+.source-note {
+  font-size: 10.5px;
+  color: #99a;
+  text-align: center;
+  margin-top: 18px;
+  padding-bottom: 24px;
+  line-height: 1.6;
+}
+
+/* Citations section */
+.citations-section {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  padding: 0 16px;
+}
+.citations-section h2 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a2744;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #dce3ef;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.citation-card {
+  background: white;
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  border-left: 4px solid #1a2744;
+}
+.citation-card.serve-paper    { border-color: #e63946; }
+.citation-card.volley-paper   { border-color: #457b9d; }
+.citation-card.forehand-paper { border-color: #2a9d8f; }
+.citation-card.shoulder-paper { border-color: #e9c46a; }
+.citation-card.trunk-paper    { border-color: #f4a261; }
+.citation-card.footwork-paper { border-color: #6a4c93; }
+.citation-card.grip-paper     { border-color: #52b788; }
+
+.citation-ref {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #1a2744;
+  margin-bottom: 6px;
+}
+.citation-journal {
+  font-size: 11px;
+  color: #778;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+.citation-doi {
+  font-size: 11px;
+  color: #5588bb;
+}
+.citation-doi a { color: #5588bb; text-decoration: none; }
+.citation-doi a:hover { text-decoration: underline; }
+.key-findings { margin-top: 10px; }
+.key-findings h4 {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #778;
+  margin-bottom: 7px;
+  font-weight: 600;
+}
+.finding-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: #334;
+}
+.finding-item::before {
+  content: "›";
+  color: #aab;
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: -1px;
+}
+.finding-item em {
+  font-style: normal;
+  background: #fef9e7;
+  border-radius: 3px;
+  padding: 0 3px;
+  color: #7d5a00;
+  font-weight: 500;
+}
+.finding-item strong {
+  color: #1a2744;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  margin-top: 10px;
+  margin-bottom: 2px;
+}
+.data-table th {
+  background: #f0f3f8;
+  padding: 5px 10px;
+  text-align: left;
+  font-weight: 600;
+  color: #445;
+  border-bottom: 1px solid #dce3ef;
+}
+.data-table td {
+  padding: 4px 10px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #445;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table .hi { color: #c0392b; font-weight: 600; }
+.data-table .med { color: #d35400; font-weight: 600; }
+.citation-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 800px) {
+  .citation-grid { grid-template-columns: 1fr; }
+}
+
+.tooltip {
+  position: fixed;
+  background: #1a2744;
+  color: white;
+  padding: 7px 11px;
+  border-radius: 7px;
+  font-size: 12px;
+  pointer-events: none;
+  display: none;
+  z-index: 999;
+  max-width: 220px;
+  line-height: 1.5;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
+
+.muscle { cursor: pointer; transition: opacity 0.12s; }
+.muscle:hover { opacity: 0.75; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Tennis Muscle Activation · Stroke &amp; Position Guide</h1>
+  <p>Based on Chow et al. (1999), Ryu et al. (1988), and biomechanics EMG literature &nbsp;·&nbsp; Right-handed player shown</p>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab-btn active" onclick="setScenario('forehand',this)">Forehand</button>
+  <button class="tab-btn" onclick="setScenario('backhand1h',this)">1H Backhand</button>
+  <button class="tab-btn" onclick="setScenario('backhand2h',this)">2H Backhand</button>
+  <button class="tab-btn" onclick="setScenario('serve',this)">Serve</button>
+  <button class="tab-btn" onclick="setScenario('volley_fh',this)">Forehand Volley</button>
+  <button class="tab-btn" onclick="setScenario('volley_bh',this)">Backhand Volley</button>
+  <button class="tab-btn" onclick="setScenario('crouched',this)">Ready Position</button>
+  <button class="tab-btn" onclick="setScenario('moving',this)">Moving / Footwork</button>
+</nav>
+
+<div class="main-container">
+  <div class="diagram-row">
+
+    <!-- FRONT VIEW -->
+    <div class="body-panel">
+      <h3>Front View</h3>
+      <div class="dom-label">
+        <span>◀ Non-dom (L)</span>
+        <span>Dom (R) ▶</span>
+      </div>
+      <svg viewBox="0 0 200 460" width="190" height="437">
+        <!-- Body outline -->
+        <g fill="#f2e0cc" stroke="#c9a87a" stroke-width="1.2" stroke-linejoin="round">
+          <circle cx="100" cy="30" r="25"/>
+          <rect x="89" y="53" width="22" height="22" rx="4"/>
+          <path d="M38,75 L162,75 L158,232 L128,240 L72,240 L42,232 Z"/>
+          <path d="M162,80 L180,94 L183,188 L165,191 L161,86 Z"/>
+          <path d="M38,80 L20,94 L17,188 L35,191 L39,86 Z"/>
+          <path d="M165,191 L183,188 L185,258 L167,261 Z"/>
+          <path d="M35,191 L17,188 L15,258 L33,261 Z"/>
+          <ellipse cx="177" cy="268" rx="10" ry="12"/>
+          <ellipse cx="23" cy="268" rx="10" ry="12"/>
+          <path d="M128,240 L140,243 L138,368 L120,370 Z"/>
+          <path d="M72,240 L60,243 L62,368 L80,370 Z"/>
+          <path d="M120,370 L138,368 L136,440 L118,442 Z"/>
+          <path d="M80,370 L62,368 L60,440 L78,442 Z"/>
+          <path d="M116,442 L138,440 L143,448 L116,448 Z"/>
+          <path d="M82,442 L58,440 L57,448 L82,448 Z"/>
+        </g>
+
+        <!-- FRONT MUSCLES -->
+        <!-- Ant Deltoid - Dominant (right in diagram = body's right = viewer's right) -->
+        <ellipse id="f-ant-deltoid-r" class="muscle" cx="163" cy="96" rx="15" ry="17" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Anterior Deltoid (Dominant)"/>
+        <ellipse id="f-ant-deltoid-l" class="muscle" cx="37" cy="96" rx="15" ry="17" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Anterior Deltoid (Non-dominant)"/>
+
+        <!-- Pec Major -->
+        <ellipse id="f-pec-major" class="muscle" cx="100" cy="120" rx="44" ry="28" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Pectoralis Major"/>
+
+        <!-- Biceps dominant (right) -->
+        <ellipse id="f-biceps-r" class="muscle" cx="173" cy="156" rx="11" ry="27" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Biceps Brachii (Dominant)"/>
+        <ellipse id="f-biceps-l" class="muscle" cx="27" cy="156" rx="11" ry="27" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Biceps Brachii (Non-dominant)"/>
+
+        <!-- Forearm Flexors / FCR -->
+        <ellipse id="f-forearm-flex-r" class="muscle" cx="177" cy="218" rx="9" ry="28" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Wrist Flexors / FCR (Dominant)"/>
+        <ellipse id="f-forearm-flex-l" class="muscle" cx="23" cy="218" rx="9" ry="28" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Wrist Flexors / FCR (Non-dominant)"/>
+
+        <!-- Serratus Anterior -->
+        <ellipse id="f-serratus-r" class="muscle" cx="143" cy="152" rx="13" ry="26" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Serratus Anterior (Dominant side)"/>
+        <ellipse id="f-serratus-l" class="muscle" cx="57" cy="152" rx="13" ry="26" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Serratus Anterior (Non-dominant side)"/>
+
+        <!-- Rectus Abdominis -->
+        <ellipse id="f-rect-abdominis" class="muscle" cx="100" cy="192" rx="18" ry="37" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Rectus Abdominis"/>
+
+        <!-- Obliques -->
+        <ellipse id="f-obliques-r" class="muscle" cx="132" cy="190" rx="15" ry="38" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Obliques (Dominant side)"/>
+        <ellipse id="f-obliques-l" class="muscle" cx="68" cy="190" rx="15" ry="38" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Obliques (Non-dominant side)"/>
+
+        <!-- Hip Flexors -->
+        <ellipse id="f-hip-flex-r" class="muscle" cx="123" cy="256" rx="19" ry="19" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Hip Flexors (R)"/>
+        <ellipse id="f-hip-flex-l" class="muscle" cx="77" cy="256" rx="19" ry="19" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Hip Flexors (L)"/>
+
+        <!-- Quadriceps -->
+        <ellipse id="f-quad-r" class="muscle" cx="130" cy="314" rx="21" ry="50" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Quadriceps (R)"/>
+        <ellipse id="f-quad-l" class="muscle" cx="70" cy="314" rx="21" ry="50" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Quadriceps (L)"/>
+
+        <!-- Adductors (inner thigh) -->
+        <ellipse id="f-adductors-r" class="muscle" cx="113" cy="310" rx="13" ry="44" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Hip Adductors (R)"/>
+        <ellipse id="f-adductors-l" class="muscle" cx="87" cy="310" rx="13" ry="44" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Hip Adductors (L)"/>
+
+        <!-- Abbreviated labels -->
+        <text x="163" y="97" font-size="7.5" fill="#333" text-anchor="middle" font-weight="bold" pointer-events="none">AD</text>
+        <text x="37" y="97" font-size="7.5" fill="#333" text-anchor="middle" font-weight="bold" pointer-events="none">AD</text>
+        <text x="100" y="122" font-size="7.5" fill="#333" text-anchor="middle" font-weight="bold" pointer-events="none">PCM</text>
+        <text x="175" y="158" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">Bi</text>
+        <text x="25" y="158" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">Bi</text>
+        <text x="177" y="220" font-size="6.5" fill="#333" text-anchor="middle" pointer-events="none">FCR</text>
+        <text x="23" y="220" font-size="6.5" fill="#333" text-anchor="middle" pointer-events="none">FCR</text>
+        <text x="145" y="165" font-size="6.5" fill="#333" text-anchor="start" pointer-events="none">SA</text>
+        <text x="55" y="165" font-size="6.5" fill="#333" text-anchor="end" pointer-events="none">SA</text>
+        <text x="100" y="194" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">RA</text>
+        <text x="135" y="190" font-size="7" fill="#333" text-anchor="start" pointer-events="none">OB</text>
+        <text x="65" y="190" font-size="7" fill="#333" text-anchor="end" pointer-events="none">OB</text>
+        <text x="123" y="258" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">HF</text>
+        <text x="77" y="258" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">HF</text>
+        <text x="132" y="316" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">Q</text>
+        <text x="68" y="316" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">Q</text>
+        <text x="100" y="312" font-size="6.5" fill="#333" text-anchor="middle" pointer-events="none">ADD</text>
+      </svg>
+    </div>
+
+    <!-- BACK VIEW -->
+    <div class="body-panel">
+      <h3>Back View</h3>
+      <div class="dom-label">
+        <span>◀ Non-dom (L)</span>
+        <span>Dom (R) ▶</span>
+      </div>
+      <svg viewBox="0 0 200 460" width="190" height="437">
+        <!-- Body outline (back) -->
+        <g fill="#f2e0cc" stroke="#c9a87a" stroke-width="1.2" stroke-linejoin="round">
+          <circle cx="100" cy="30" r="25"/>
+          <rect x="89" y="53" width="22" height="22" rx="4"/>
+          <path d="M38,75 L162,75 L158,232 L128,240 L72,240 L42,232 Z"/>
+          <path d="M162,80 L180,94 L183,188 L165,191 L161,86 Z"/>
+          <path d="M38,80 L20,94 L17,188 L35,191 L39,86 Z"/>
+          <path d="M165,191 L183,188 L185,258 L167,261 Z"/>
+          <path d="M35,191 L17,188 L15,258 L33,261 Z"/>
+          <ellipse cx="177" cy="268" rx="10" ry="12"/>
+          <ellipse cx="23" cy="268" rx="10" ry="12"/>
+          <path d="M128,240 L140,243 L138,368 L120,370 Z"/>
+          <path d="M72,240 L60,243 L62,368 L80,370 Z"/>
+          <path d="M120,370 L138,368 L136,440 L118,442 Z"/>
+          <path d="M80,370 L62,368 L60,440 L78,442 Z"/>
+          <path d="M116,442 L138,440 L143,448 L116,448 Z"/>
+          <path d="M82,442 L58,440 L57,448 L82,448 Z"/>
+        </g>
+
+        <!-- BACK MUSCLES -->
+        <!-- Posterior Deltoid -->
+        <ellipse id="b-post-deltoid-r" class="muscle" cx="162" cy="95" rx="15" ry="17" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Posterior Deltoid (Dominant)"/>
+        <ellipse id="b-post-deltoid-l" class="muscle" cx="38" cy="95" rx="15" ry="17" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Posterior Deltoid (Non-dominant)"/>
+
+        <!-- Upper Trapezius -->
+        <ellipse id="b-trap-upper" class="muscle" cx="100" cy="80" rx="38" ry="14" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Upper Trapezius"/>
+
+        <!-- Lower Trapezius -->
+        <ellipse id="b-trap-lower" class="muscle" cx="100" cy="114" rx="30" ry="20" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Lower Trapezius"/>
+
+        <!-- Rotator Cuff (infraspinatus region) -->
+        <ellipse id="b-rotator-cuff-r" class="muscle" cx="144" cy="108" rx="16" ry="16" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Rotator Cuff / Infraspinatus (Dominant)"/>
+        <ellipse id="b-rotator-cuff-l" class="muscle" cx="56" cy="108" rx="16" ry="16" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Rotator Cuff (Non-dominant)"/>
+
+        <!-- Latissimus Dorsi -->
+        <ellipse id="b-lat-dorsi-r" class="muscle" cx="138" cy="162" rx="19" ry="50" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Latissimus Dorsi (Dominant side)"/>
+        <ellipse id="b-lat-dorsi-l" class="muscle" cx="62" cy="162" rx="19" ry="50" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Latissimus Dorsi (Non-dominant side)"/>
+
+        <!-- Triceps -->
+        <ellipse id="b-triceps-r" class="muscle" cx="173" cy="152" rx="11" ry="28" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Triceps Brachii (Dominant)"/>
+        <ellipse id="b-triceps-l" class="muscle" cx="27" cy="152" rx="11" ry="28" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Triceps Brachii (Non-dominant)"/>
+
+        <!-- Forearm Extensors / ECR -->
+        <ellipse id="b-forearm-ext-r" class="muscle" cx="177" cy="218" rx="9" ry="28" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Wrist Extensors / ECR (Dominant)"/>
+        <ellipse id="b-forearm-ext-l" class="muscle" cx="23" cy="218" rx="9" ry="28" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Wrist Extensors / ECR (Non-dominant)"/>
+
+        <!-- Erector Spinae (spine strip) -->
+        <rect id="b-erector-spinae" class="muscle" x="92" y="148" width="16" height="78" rx="6" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Erector Spinae (Lumbar)"/>
+
+        <!-- Gluteus Maximus -->
+        <ellipse id="b-glutes-r" class="muscle" cx="128" cy="264" rx="24" ry="27" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Gluteus Maximus (R)"/>
+        <ellipse id="b-glutes-l" class="muscle" cx="72" cy="264" rx="24" ry="27" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Gluteus Maximus (L)"/>
+
+        <!-- Gluteus Medius -->
+        <ellipse id="b-glute-med-r" class="muscle" cx="146" cy="248" rx="16" ry="18" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Gluteus Medius (R)"/>
+        <ellipse id="b-glute-med-l" class="muscle" cx="54" cy="248" rx="16" ry="18" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Gluteus Medius (L)"/>
+
+        <!-- Hamstrings -->
+        <ellipse id="b-hamstrings-r" class="muscle" cx="130" cy="326" rx="21" ry="52" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Hamstrings (R)"/>
+        <ellipse id="b-hamstrings-l" class="muscle" cx="70" cy="326" rx="21" ry="52" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Hamstrings (L)"/>
+
+        <!-- Gastrocnemius -->
+        <ellipse id="b-gastrocnemius-r" class="muscle" cx="130" cy="406" rx="13" ry="30" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Gastrocnemius (R)"/>
+        <ellipse id="b-gastrocnemius-l" class="muscle" cx="70" cy="406" rx="13" ry="30" fill="#e0e0e0" stroke="white" stroke-width="0.7" data-name="Gastrocnemius (L)"/>
+
+        <!-- Abbreviated labels -->
+        <text x="162" y="96" font-size="7.5" fill="#333" text-anchor="middle" font-weight="bold" pointer-events="none">PD</text>
+        <text x="38" y="96" font-size="7.5" fill="#333" text-anchor="middle" font-weight="bold" pointer-events="none">PD</text>
+        <text x="100" y="81" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">UTrap</text>
+        <text x="100" y="115" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">LTrap</text>
+        <text x="144" y="110" font-size="6.5" fill="#333" text-anchor="middle" pointer-events="none">RC</text>
+        <text x="56" y="110" font-size="6.5" fill="#333" text-anchor="middle" pointer-events="none">RC</text>
+        <text x="138" y="164" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">LD</text>
+        <text x="62" y="164" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">LD</text>
+        <text x="175" y="154" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">Tri</text>
+        <text x="25" y="154" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">Tri</text>
+        <text x="177" y="220" font-size="6.5" fill="#333" text-anchor="middle" pointer-events="none">ECR</text>
+        <text x="23" y="220" font-size="6.5" fill="#333" text-anchor="middle" pointer-events="none">ECR</text>
+        <text x="100" y="190" font-size="6.5" fill="#333" text-anchor="middle" pointer-events="none">ES</text>
+        <text x="128" y="265" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">GM</text>
+        <text x="72" y="265" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">GM</text>
+        <text x="148" y="249" font-size="6.5" fill="#333" text-anchor="start" pointer-events="none">GMd</text>
+        <text x="52" y="249" font-size="6.5" fill="#333" text-anchor="end" pointer-events="none">GMd</text>
+        <text x="130" y="328" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">Ham</text>
+        <text x="70" y="328" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">Ham</text>
+        <text x="130" y="408" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">GC</text>
+        <text x="70" y="408" font-size="7" fill="#333" text-anchor="middle" pointer-events="none">GC</text>
+      </svg>
+    </div>
+
+    <!-- SIDE PANELS -->
+    <div class="side-panels">
+      <div class="legend-panel">
+        <div class="panel-title">Activation Level</div>
+        <div class="legend-item"><div class="legend-swatch high"></div><div><strong>Primary</strong><br><span style="font-size:11px;color:#778">&gt;50% MVC</span></div></div>
+        <div class="legend-item"><div class="legend-swatch medium"></div><div><strong>Secondary</strong><br><span style="font-size:11px;color:#778">25–50% MVC</span></div></div>
+        <div class="legend-item"><div class="legend-swatch low"></div><div><strong>Minor</strong><br><span style="font-size:11px;color:#778">&lt;25% MVC (postural)</span></div></div>
+        <div class="legend-item"><div class="legend-swatch none"></div><div><strong>Inactive</strong></div></div>
+        <hr style="border:none;border-top:1px solid #eee;margin:12px 0;">
+        <div class="panel-title">Abbreviations</div>
+        <div class="abbr-grid">
+          <span><b>AD</b> Ant. Deltoid</span>
+          <span><b>PD</b> Post. Deltoid</span>
+          <span><b>PCM</b> Pec. Major</span>
+          <span><b>SA</b> Serratus Ant.</span>
+          <span><b>Bi</b> Biceps</span>
+          <span><b>Tri</b> Triceps</span>
+          <span><b>FCR</b> Wrist Flex.</span>
+          <span><b>ECR</b> Wrist Ext.</span>
+          <span><b>RC</b> Rotator Cuff</span>
+          <span><b>UTrap</b> Upper Trap.</span>
+          <span><b>LTrap</b> Lower Trap.</span>
+          <span><b>LD</b> Lat. Dorsi</span>
+          <span><b>RA</b> Rect. Abd.</span>
+          <span><b>OB</b> Obliques</span>
+          <span><b>ES</b> Erector Spinae</span>
+          <span><b>HF</b> Hip Flexors</span>
+          <span><b>Q</b> Quadriceps</span>
+          <span><b>ADD</b> Adductors</span>
+          <span><b>GM</b> Glut. Max.</span>
+          <span><b>GMd</b> Glut. Med.</span>
+          <span><b>Ham</b> Hamstrings</span>
+          <span><b>GC</b> Gastrocnem.</span>
+        </div>
+      </div>
+      <div class="info-panel">
+        <div class="panel-title">How to use</div>
+        <p style="font-size:11.5px;line-height:1.7;color:#556;">
+          Click a stroke or position tab above. Hover over any muscle region for its full name and activation level.<br><br>
+          <b>Dom (R)</b> = hitting arm side. Diagrams show player facing viewer.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notes Panel -->
+  <div class="notes-panel">
+    <h3 id="notes-title">Forehand Groundstroke</h3>
+    <p class="desc" id="notes-desc">Loading...</p>
+    <div class="highlights-row">
+      <div class="highlights-col primary">
+        <h4>🔴 Primary Movers</h4>
+        <div class="muscle-tags" id="tags-primary"></div>
+      </div>
+      <div class="highlights-col secondary">
+        <h4>🟠 Secondary / Stabilizers</h4>
+        <div class="muscle-tags" id="tags-secondary"></div>
+      </div>
+      <div class="highlights-col minor">
+        <h4>🟡 Minor / Postural</h4>
+        <div class="muscle-tags" id="tags-minor"></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="source-note">
+    Diagram incorporates findings from 8 peer-reviewed EMG studies listed below. Hover over any muscle for its name and activation level.
+  </p>
+</div>
+
+<!-- CITATIONS SECTION -->
+<div class="citations-section">
+  <h2>Research Sources &amp; Key Findings</h2>
+  <div class="citation-grid">
+
+    <!-- Card 1: Chow 1999 Volley -->
+    <div class="citation-card volley-paper">
+      <div class="citation-ref">[1] Chow JW, Carlton LG, Lim Y-T, Shim J-H, Chae W-S, Kuenster AF (1999)</div>
+      <div class="citation-journal">Muscle activation during the tennis volley. <em>Medicine &amp; Science in Sports &amp; Exercise</em>, 31(6):846–854.</div>
+      <div class="citation-doi"><a href="https://pubmed.ncbi.nlm.nih.gov/10378912/" target="_blank">PMID 10378912</a></div>
+      <div class="key-findings">
+        <h4>Key Findings (Primary Source)</h4>
+        <div class="finding-item"><span><em>"The extensor carpi radialis was more active than the flexor carpi radialis during both forehand and backhand volleys, suggesting the importance of wrist extension/abduction and grip strength."</em></span></div>
+        <div class="finding-item"><span>Subjects <em>"did not tighten their grip and wrist until moments before ball impact"</em> — FCR/ECR peaked in the forward swing phase immediately before contact.</span></div>
+        <div class="finding-item"><span>Triceps brachii activity was <em>"clearly greater"</em> in backhand than forehand trials; attributed to <em>"greater elbow extension during the backhand volley."</em></span></div>
+        <div class="finding-item"><span>PCM was significantly more active in forehand forward swing than backhand (<em>P</em>=0.037), indicating a <em>"greater role for the pectoralis major than previously believed."</em></span></div>
+        <div class="finding-item"><span>In the ready phase, erector spinae was most active among monitored muscles: players <em>"leaned forward slightly and moved the line of gravity toward the balls of the feet"</em> to prepare for forward movement.</span></div>
+        <div class="finding-item"><span>External oblique co-contractions during active phases: ipsilateral OB functioned as <em>"ipsilateral lateral flexor"</em> while contralateral OB served as <em>"contralateral axial rotator."</em></span></div>
+      </div>
+    </div>
+
+    <!-- Card 2: Chow 2007 Pre/Post Impact -->
+    <div class="citation-card volley-paper">
+      <div class="citation-ref">[2] Chow JW, Tillman MD, Knudson DV, Andrew DPS (2007)</div>
+      <div class="citation-journal">Pre- and post-impact muscle activation in the tennis volley. <em>British Journal of Sports Medicine</em>, 41(11):754–759.</div>
+      <div class="citation-doi"><a href="https://doi.org/10.1136/bjsm.2007.037184" target="_blank">doi:10.1136/bjsm.2007.037184</a></div>
+      <div class="key-findings">
+        <h4>Key Findings · Pre vs. Post-Impact EMG (%MVC)</h4>
+        <table class="data-table">
+          <tr><th>Muscle</th><th>Pre-Impact</th><th>Post-Impact</th></tr>
+          <tr><td>Ant./Mid. Deltoid</td><td class="hi">61.7%</td><td>37.3%</td></tr>
+          <tr><td>Extensor Carpi Radialis</td><td>49.4%</td><td class="hi">53.9%</td></tr>
+          <tr><td>Triceps Brachii</td><td class="med">48.6%</td><td>31.2%</td></tr>
+          <tr><td>Flexor Carpi Radialis</td><td class="med">43.6%</td><td>31.5%</td></tr>
+          <tr><td>Post./Mid. Deltoid</td><td>39.9%</td><td>26.2%</td></tr>
+        </table>
+        <div class="finding-item" style="margin-top:8px"><span>Anterior deltoid dominates <strong>pre-impact</strong> for racket positioning; ECR dominates <strong>post-impact</strong> for wrist stabilization and shock absorption.</span></div>
+        <div class="finding-item"><span>Ball speed effects: pre-impact activation increased <em>~12%</em> from slow to fast balls; post-impact increased <em>~10%</em>, showing players anticipate impact demands.</span></div>
+        <div class="finding-item"><span><em>"Concerns over possible arm injuries due to larger tennis ball are unjustified"</em> — ball size showed no meaningful differences in muscle activation patterns.</span></div>
+      </div>
+    </div>
+
+    <!-- Card 3: Kibler 2007 Serve -->
+    <div class="citation-card serve-paper">
+      <div class="citation-ref">[3] Kibler WB, Chandler TJ, Shapiro R, Conuel M (2007)</div>
+      <div class="citation-journal">Muscle activation in coupled scapulohumeral motions in the high performance tennis serve. <em>British Journal of Sports Medicine</em>, 41(11):745–749.</div>
+      <div class="citation-doi"><a href="https://doi.org/10.1136/bjsm.2007.037333" target="_blank">doi:10.1136/bjsm.2007.037333</a></div>
+      <div class="key-findings">
+        <h4>Key Findings · Muscle Onset Timing Before Ball Impact</h4>
+        <table class="data-table">
+          <tr><th>Muscle</th><th>Onset (ms)</th><th>% of Serve Motion</th></tr>
+          <tr><td>Serratus Anterior</td><td class="hi">−287 ms</td><td class="hi">74%</td></tr>
+          <tr><td>Upper Trapezius</td><td class="hi">−234 ms</td><td class="hi">70%</td></tr>
+          <tr><td>Anterior Deltoid</td><td class="hi">−250 ms</td><td class="med">63%</td></tr>
+          <tr><td>Teres Minor</td><td class="med">−215 ms</td><td class="hi">81%</td></tr>
+          <tr><td>Lower Trapezius</td><td class="med">−120 ms</td><td class="med">62%</td></tr>
+          <tr><td>Supraspinatus</td><td>−104 ms</td><td>58%</td></tr>
+          <tr><td>Infraspinatus</td><td>+47 ms (post-impact)</td><td>28%</td></tr>
+        </table>
+        <div class="finding-item" style="margin-top:8px"><span>Scapular stabilizers fire in strict proximal-to-distal sequence: serratus anterior and trapezius activate <em>before</em> the arm positioners and rotator cuff muscles.</span></div>
+        <div class="finding-item"><span>Infraspinatus activates only <em>after</em> ball impact (+47 ms), suggesting a <em>fine-tuning and deceleration</em> role rather than a propulsive one.</span></div>
+      </div>
+    </div>
+
+    <!-- Card 4: Ryu 1988 Shoulder -->
+    <div class="citation-card shoulder-paper">
+      <div class="citation-ref">[4] Ryu RKN, McCormick J, Jobe FW, Moynes DR, Antonelli DJ (1988)</div>
+      <div class="citation-journal">An electromyographic analysis of shoulder function in tennis players. <em>American Journal of Sports Medicine</em>, 16(5):481–485.</div>
+      <div class="citation-doi"><a href="https://doi.org/10.1177/036354658801600509" target="_blank">doi:10.1177/036354658801600509</a></div>
+      <div class="key-findings">
+        <h4>Key Findings (Foundational Shoulder EMG Study)</h4>
+        <div class="finding-item"><span>Serve &amp; forehand: <em>"Subscapularis, pectoralis major, and serratus anterior display the greatest activity"</em> — establishing these as the primary drivers of internal rotation and shoulder acceleration.</span></div>
+        <div class="finding-item"><span>Backhand acceleration &amp; follow-through: <em>"Middle deltoid, supraspinatus, and infraspinatus are most active"</em> — confirming the posterior shoulder dominance in the backhand.</span></div>
+        <div class="finding-item"><span>Biceps brachii demonstrated increased activity during cocking and follow-through phases across all strokes, providing elbow flexion stability and glenohumeral compression.</span></div>
+        <div class="finding-item"><span>Tennis strokes involve <em>"complex sequences of muscle activity that incorporate contributions from the lower extremities and trunk into smooth, coordinated patterns"</em> — an early articulation of the kinetic chain concept in tennis.</span></div>
+      </div>
+    </div>
+
+    <!-- Card 5: Chow 2003 Trunk Serve -->
+    <div class="citation-card trunk-paper">
+      <div class="citation-ref">[5] Chow JW, Shim JH, Lim YT (2003)</div>
+      <div class="citation-journal">Lower trunk muscle activity during the tennis serve. <em>Journal of Science and Medicine in Sport</em>, 6(4):512–518.</div>
+      <div class="citation-doi"><a href="https://doi.org/10.1016/s1440-2440(03)80276-1" target="_blank">PMID 14723400 · doi:10.1016/s1440-2440(03)80276-1</a></div>
+      <div class="key-findings">
+        <h4>Key Findings · Trunk Muscles During the Serve</h4>
+        <div class="finding-item"><span><em>"No major differences in muscle activation pattern were found across different serve types"</em> (flat, topspin, slice) — trunk activation is largely consistent regardless of serve style.</span></div>
+        <div class="finding-item"><span><em>"Co-activation of lower trunk muscles may help to stabilise the lumbar spine during the arch back and forward swing phases"</em> — bilateral erector spinae and oblique co-contractions form a protective corset.</span></div>
+        <div class="finding-item"><span><em>"Bilateral asymmetries were more pronounced in rectus abdominis and external oblique than in internal oblique and erector spinae muscles"</em> — the superficial abdominal wall shows stronger lateralization than deep muscles.</span></div>
+        <div class="finding-item"><span>Abdominal muscles showed greater activity during upward racket swing in topspin serves compared to flat serves — subtle differences exist even where overall patterns are similar.</span></div>
+      </div>
+    </div>
+
+    <!-- Card 6: Rogowski 2011 Forehand -->
+    <div class="citation-card forehand-paper">
+      <div class="citation-ref">[6] Rogowski I, Rouffet D, Lambalot F, Brosseau O, Hautier C (2011)</div>
+      <div class="citation-journal">Trunk and upper limb muscle activation during flat and topspin forehand drives in young tennis players. <em>Journal of Applied Biomechanics</em>, 27(1):15–21.</div>
+      <div class="citation-doi"><a href="https://doi.org/10.1123/jab.27.1.15" target="_blank">doi:10.1123/jab.27.1.15</a></div>
+      <div class="key-findings">
+        <h4>Key Findings · Flat vs. Topspin Forehand</h4>
+        <div class="finding-item"><span><em>"Shoulder muscle activity rose from flat to topspin forehand drives in less-skilled players, but not for higher-skilled players"</em> — elite players recruit shoulder muscles more economically regardless of spin type.</span></div>
+        <div class="finding-item"><span><em>"Forearm muscle activity reduced from flat to topspin forehand drives in skilled players"</em> but was similar in less-skilled players — expert efficiency in wrist/forearm control.</span></div>
+        <div class="finding-item"><span><em>"Radial deviation proved more effective than shoulder abduction for increasing vertical racket velocity"</em> when transitioning from flat to topspin — wrist mechanics are a key performance differentiator.</span></div>
+        <div class="finding-item"><span>Practical implication: <strong>higher overall EMG does not equal better performance</strong>; expert players achieve greater ball velocity with more selective, economical muscle recruitment.</span></div>
+      </div>
+    </div>
+
+    <!-- Card 7: Tai 2022 Drive Volley -->
+    <div class="citation-card volley-paper">
+      <div class="citation-ref">[7] Tai M-L, Yang C-J, Tang W-T, Elliott B, Chang K-L (2022)</div>
+      <div class="citation-journal">Upper extremity muscle activation during drive volley and groundstroke for two-handed backhand of female tennis players. <em>Journal of Sports Science &amp; Medicine</em>, 21(4):586–594.</div>
+      <div class="citation-doi"><a href="https://doi.org/10.52082/jssm.2022.586" target="_blank">doi:10.52082/jssm.2022.586</a></div>
+      <div class="key-findings">
+        <h4>Key Findings · Drive Volley vs. Groundstroke (2H Backhand)</h4>
+        <div class="finding-item"><span><em>"Drive volleys showed greater extensor carpi radialis and triceps brachii activation in the trailing arm, enabling a shortened backswing in the preparation phase"</em> — the arm must compensate for reduced preparation time.</span></div>
+        <div class="finding-item"><span>Leading (non-dominant) arm FCR was significantly higher in drive volleys (<em>52.50 ± 20.52%</em>) versus groundstrokes (<em>40.39 ± 13.91%</em>) — the non-dominant arm contributes more to urgent volley situations.</span></div>
+        <div class="finding-item"><span><em>"The drive volley and groundstroke require a relatively firm grip near impact"</em> due to high external forces — both strokes require protective co-contraction of wrist flexors and extensors at contact.</span></div>
+      </div>
+    </div>
+
+    <!-- Card 8: Dong 2024 Grip Effects -->
+    <div class="citation-card grip-paper">
+      <div class="citation-ref">[8] Dong R, Su X, Li S, Ni X, Liu Y (2024)</div>
+      <div class="citation-journal">Characteristics, relationships, and differences in muscle activity and impact load attenuation during tennis forehand stroke with different grips. <em>Life (Basel)</em>, 14(11):1433.</div>
+      <div class="citation-doi"><a href="https://doi.org/10.3390/life14111433" target="_blank">doi:10.3390/life14111433</a></div>
+      <div class="key-findings">
+        <h4>Key Findings · Eastern vs. Western Grip</h4>
+        <div class="finding-item"><span>Flexor carpi ulnaris RMS was significantly higher in Eastern grip (<em>0.97 ± 0.21</em>) compared to Western grip (<em>0.76 ± 0.30</em>, <em>p</em>=0.037) — Eastern grip demands more active wrist flexion stabilization.</span></div>
+        <div class="finding-item"><span>Extensor digitorum communis contributed more to impact load attenuation in the Western grip — finger extensors play a greater shock-absorbing role when the wrist is more pronated.</span></div>
+        <div class="finding-item"><span>Forearm muscles showed <em>"excellent coordination across both grip styles, with cross-correlation coefficients exceeding 0.90, indicating a high degree of synchronized contraction"</em> — co-activation pattern is robust across technique.</span></div>
+        <div class="finding-item"><span>Eastern grip produced higher peak wrist acceleration on the ulnar side (<em>p</em>=0.016) but exhibited more rapid load attenuation — <strong>grip choice trades off force application speed vs. attenuation capacity.</strong></span></div>
+      </div>
+    </div>
+
+  </div><!-- end citation-grid -->
+</div><!-- end citations-section -->
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const COLORS = { high: '#e63946', medium: '#f4a261', low: '#f9c74f', null: '#e0e0e0' };
+
+// Muscle ID map: logical name → front/back SVG element IDs
+const MUSCLE_MAP = {
+  'ant-deltoid-r':    ['f-ant-deltoid-r'],
+  'ant-deltoid-l':    ['f-ant-deltoid-l'],
+  'pec-major':        ['f-pec-major'],
+  'biceps-r':         ['f-biceps-r'],
+  'biceps-l':         ['f-biceps-l'],
+  'forearm-flex-r':   ['f-forearm-flex-r'],
+  'forearm-flex-l':   ['f-forearm-flex-l'],
+  'serratus-r':       ['f-serratus-r'],
+  'serratus-l':       ['f-serratus-l'],
+  'rect-abdominis':   ['f-rect-abdominis'],
+  'obliques-r':       ['f-obliques-r'],
+  'obliques-l':       ['f-obliques-l'],
+  'hip-flex-r':       ['f-hip-flex-r'],
+  'hip-flex-l':       ['f-hip-flex-l'],
+  'quad-r':           ['f-quad-r'],
+  'quad-l':           ['f-quad-l'],
+  'adductors-r':      ['f-adductors-r'],
+  'adductors-l':      ['f-adductors-l'],
+  'post-deltoid-r':   ['b-post-deltoid-r'],
+  'post-deltoid-l':   ['b-post-deltoid-l'],
+  'trap-upper':       ['b-trap-upper'],
+  'trap-lower':       ['b-trap-lower'],
+  'rotator-cuff-r':   ['b-rotator-cuff-r'],
+  'rotator-cuff-l':   ['b-rotator-cuff-l'],
+  'lat-dorsi-r':      ['b-lat-dorsi-r'],
+  'lat-dorsi-l':      ['b-lat-dorsi-l'],
+  'triceps-r':        ['b-triceps-r'],
+  'triceps-l':        ['b-triceps-l'],
+  'forearm-ext-r':    ['b-forearm-ext-r'],
+  'forearm-ext-l':    ['b-forearm-ext-l'],
+  'erector-spinae':   ['b-erector-spinae'],
+  'glutes-r':         ['b-glutes-r'],
+  'glutes-l':         ['b-glutes-l'],
+  'glute-med-r':      ['b-glute-med-r'],
+  'glute-med-l':      ['b-glute-med-l'],
+  'hamstrings-r':     ['b-hamstrings-r'],
+  'hamstrings-l':     ['b-hamstrings-l'],
+  'gastro-r':         ['b-gastrocnemius-r'],
+  'gastro-l':         ['b-gastrocnemius-l'],
+};
+
+const scenarios = {
+  forehand: {
+    name: 'Forehand Groundstroke',
+    desc: 'The forehand is driven by a proximal-to-distal kinetic chain: leg push-off → bilateral core rotation (obliques + erector spinae) → shoulder acceleration (pec major + anterior deltoid + subscapularis) → elbow extension (triceps) → wrist extension (ECR). Ryu et al. (1988) identified subscapularis, pectoralis major, and serratus anterior as showing greatest activity. Rogowski et al. (2011) found skilled players recruit shoulder muscles more economically than novices when adding topspin — higher EMG does not mean better performance.',
+    keys: {
+      high: ['ECR (Dom)', 'Triceps (Dom)', 'Ant. Deltoid (Dom)', 'Pec. Major', 'Lat. Dorsi (Dom)', 'Obliques (both)', 'Erector Spinae', 'Quadriceps', 'Glutes', 'Hamstrings'],
+      medium: ['FCR (Dom)', 'Biceps (Dom)', 'Post. Deltoid (Dom)', 'Serratus (Dom)', 'Trapezius', 'Lat. Dorsi (Non-dom)', 'Hip Flexors', 'Adductors', 'Gastrocnemius'],
+      low: ['Ant. Deltoid (Non-dom)']
+    },
+    muscles: {
+      'ant-deltoid-r': 'high', 'ant-deltoid-l': 'low',
+      'pec-major': 'high',
+      'biceps-r': 'medium', 'biceps-l': null,
+      'forearm-flex-r': 'medium', 'forearm-flex-l': null,
+      'serratus-r': 'medium', 'serratus-l': null,
+      'rect-abdominis': 'medium',
+      'obliques-r': 'high', 'obliques-l': 'high',
+      'hip-flex-r': 'medium', 'hip-flex-l': 'medium',
+      'quad-r': 'high', 'quad-l': 'high',
+      'adductors-r': 'medium', 'adductors-l': 'medium',
+      'post-deltoid-r': 'medium', 'post-deltoid-l': null,
+      'trap-upper': 'medium', 'trap-lower': 'medium',
+      'rotator-cuff-r': 'medium', 'rotator-cuff-l': null,
+      'lat-dorsi-r': 'high', 'lat-dorsi-l': 'medium',
+      'triceps-r': 'high', 'triceps-l': null,
+      'forearm-ext-r': 'high', 'forearm-ext-l': null,
+      'erector-spinae': 'high',
+      'glutes-r': 'high', 'glutes-l': 'high',
+      'glute-med-r': 'medium', 'glute-med-l': 'medium',
+      'hamstrings-r': 'high', 'hamstrings-l': 'high',
+      'gastro-r': 'medium', 'gastro-l': 'medium',
+    }
+  },
+
+  backhand1h: {
+    name: 'One-Handed Backhand',
+    desc: 'The one-handed backhand relies primarily on the posterior shoulder and rotator cuff. The triceps extends the elbow in a punching/driving motion, the posterior deltoid controls the arm through external rotation, and the infraspinatus/supraspinatus (rotator cuff) stabilize the glenohumeral joint. Ryu et al. (1988) identified middle deltoid, supraspinatus, and infraspinatus as most active during backhand acceleration and follow-through. Less trunk rotation than the two-handed version — power comes more from arm and shoulder than from core rotation. The one-handed backhand places higher lateral epicondyle stress on wrist extensors than the two-handed variant.',
+    keys: {
+      high: ['ECR (Dom)', 'Triceps (Dom)', 'Post. Deltoid (Dom)', 'Rotator Cuff (Dom)', 'Quadriceps', 'Glutes', 'Hamstrings'],
+      medium: ['FCR (Dom)', 'Biceps (Dom)', 'Ant. Deltoid (Dom)', 'Serratus (Dom)', 'Trapezius', 'Erector Spinae', 'Obliques (both)', 'Hip Flexors', 'Adductors', 'Gastrocnemius'],
+      low: ['Pec. Major', 'Rect. Abdominis']
+    },
+    muscles: {
+      'ant-deltoid-r': 'medium', 'ant-deltoid-l': null,
+      'pec-major': 'low',
+      'biceps-r': 'medium', 'biceps-l': null,
+      'forearm-flex-r': 'medium', 'forearm-flex-l': null,
+      'serratus-r': 'medium', 'serratus-l': null,
+      'rect-abdominis': 'low',
+      'obliques-r': 'medium', 'obliques-l': 'medium',
+      'hip-flex-r': 'medium', 'hip-flex-l': 'medium',
+      'quad-r': 'high', 'quad-l': 'high',
+      'adductors-r': 'medium', 'adductors-l': 'medium',
+      'post-deltoid-r': 'high', 'post-deltoid-l': null,
+      'trap-upper': 'medium', 'trap-lower': 'medium',
+      'rotator-cuff-r': 'high', 'rotator-cuff-l': null,
+      'lat-dorsi-r': 'medium', 'lat-dorsi-l': null,
+      'triceps-r': 'high', 'triceps-l': null,
+      'forearm-ext-r': 'high', 'forearm-ext-l': null,
+      'erector-spinae': 'medium',
+      'glutes-r': 'high', 'glutes-l': 'high',
+      'glute-med-r': 'medium', 'glute-med-l': 'medium',
+      'hamstrings-r': 'high', 'hamstrings-l': 'high',
+      'gastro-r': 'medium', 'gastro-l': 'medium',
+    }
+  },
+
+  backhand2h: {
+    name: 'Two-Handed Backhand',
+    desc: 'The two-handed backhand generates power through extensive bilateral trunk rotation—both sets of obliques and the erector spinae fire heavily (>50% MVC). The non-dominant left arm plays an active role, with the biceps and wrist flexors (FCR) of the non-dominant side showing high activation comparable to the dominant arm. This bilateral load distribution reduces stress on the wrist extensors compared to the one-handed backhand.',
+    keys: {
+      high: ['ECR (Dom)', 'Triceps (Dom)', 'Post. Deltoid (Dom)', 'FCR (Non-dom)', 'Biceps (Non-dom)', 'Obliques (both)', 'Erector Spinae', 'Quadriceps', 'Glutes', 'Hamstrings'],
+      medium: ['Ant. Deltoid (both)', 'FCR (Dom)', 'Biceps (Dom)', 'Triceps (Non-dom)', 'Post. Deltoid (Non-dom)', 'ECR (Non-dom)', 'Trapezius', 'Rotator Cuff', 'Lat. Dorsi (both)', 'Pec. Major', 'Hip Flexors', 'Gastrocnemius'],
+      low: []
+    },
+    muscles: {
+      'ant-deltoid-r': 'medium', 'ant-deltoid-l': 'medium',
+      'pec-major': 'medium',
+      'biceps-r': 'medium', 'biceps-l': 'high',
+      'forearm-flex-r': 'medium', 'forearm-flex-l': 'high',
+      'serratus-r': 'medium', 'serratus-l': 'medium',
+      'rect-abdominis': 'medium',
+      'obliques-r': 'high', 'obliques-l': 'high',
+      'hip-flex-r': 'medium', 'hip-flex-l': 'medium',
+      'quad-r': 'high', 'quad-l': 'high',
+      'adductors-r': 'medium', 'adductors-l': 'medium',
+      'post-deltoid-r': 'high', 'post-deltoid-l': 'medium',
+      'trap-upper': 'medium', 'trap-lower': 'medium',
+      'rotator-cuff-r': 'medium', 'rotator-cuff-l': 'medium',
+      'lat-dorsi-r': 'medium', 'lat-dorsi-l': 'medium',
+      'triceps-r': 'high', 'triceps-l': 'medium',
+      'forearm-ext-r': 'high', 'forearm-ext-l': 'medium',
+      'erector-spinae': 'high',
+      'glutes-r': 'high', 'glutes-l': 'high',
+      'glute-med-r': 'medium', 'glute-med-l': 'medium',
+      'hamstrings-r': 'high', 'hamstrings-l': 'high',
+      'gastro-r': 'medium', 'gastro-l': 'medium',
+    }
+  },
+
+  serve: {
+    name: 'Serve',
+    desc: 'The serve produces the highest peak muscle activation of all strokes. Kibler et al. (2007) established the precise proximal-to-distal onset sequence: serratus anterior (−287 ms, 74% of serve motion) → anterior deltoid (−250 ms) → upper trapezius (−234 ms) → teres minor (−215 ms) → lower trapezius (−120 ms) → supraspinatus (−104 ms) → infraspinatus fires post-impact (+47 ms) for eccentric deceleration only. Chow et al. (2003) confirmed no major differences in trunk muscle activation across flat, topspin, and slice serves, and that bilateral co-activation of lower trunk muscles stabilizes the lumbar spine during the arch-back phase.',
+    keys: {
+      high: ['Serratus Ant. (Dom)', 'Upper Trapezius', 'Lower Trapezius', 'Rotator Cuff (Dom)', 'Ant. Deltoid (Dom)', 'Post. Deltoid (Dom)', 'Triceps (Dom)', 'Pec. Major', 'Lat. Dorsi (Dom)', 'Obliques (both)', 'Erector Spinae', 'Rect. Abdominis', 'Quadriceps', 'Glutes', 'Hamstrings', 'Gastrocnemius'],
+      medium: ['FCR (Dom)', 'Biceps (Dom)', 'ECR (Dom)', 'Lat. Dorsi (Non-dom)', 'Glut. Medius', 'Hip Flexors', 'Adductors'],
+      low: ['Ant. Deltoid (Non-dom)']
+    },
+    muscles: {
+      'ant-deltoid-r': 'high', 'ant-deltoid-l': 'low',
+      'pec-major': 'high',
+      'biceps-r': 'medium', 'biceps-l': null,
+      'forearm-flex-r': 'medium', 'forearm-flex-l': null,
+      'serratus-r': 'high', 'serratus-l': null,
+      'rect-abdominis': 'high',
+      'obliques-r': 'high', 'obliques-l': 'high',
+      'hip-flex-r': 'medium', 'hip-flex-l': 'medium',
+      'quad-r': 'high', 'quad-l': 'high',
+      'adductors-r': 'medium', 'adductors-l': 'medium',
+      'post-deltoid-r': 'high', 'post-deltoid-l': null,
+      'trap-upper': 'high', 'trap-lower': 'high',
+      'rotator-cuff-r': 'high', 'rotator-cuff-l': null,
+      'lat-dorsi-r': 'high', 'lat-dorsi-l': 'medium',
+      'triceps-r': 'high', 'triceps-l': null,
+      'forearm-ext-r': 'medium', 'forearm-ext-l': null,
+      'erector-spinae': 'high',
+      'glutes-r': 'high', 'glutes-l': 'high',
+      'glute-med-r': 'medium', 'glute-med-l': 'medium',
+      'hamstrings-r': 'high', 'hamstrings-l': 'high',
+      'gastro-r': 'high', 'gastro-l': 'high',
+    }
+  },
+
+  volley_fh: {
+    name: 'Forehand Volley',
+    desc: 'The forehand volley is primarily an upper body stroke with substantially lower core and leg activation than groundstrokes. Chow et al. (2007) quantified the pre/post-impact split: anterior/middle deltoid peaks pre-impact at 61.7% MVC (positioning the racket), then ECR takes over post-impact at 53.9% MVC (wrist stabilization and shock absorption). Grip tightening via FCR/ECR peaks just before ball contact (Chow et al. 1999). Ball speed increases activation ~12% pre-impact and ~10% post-impact as players anticipate harder shots.',
+    keys: {
+      high: ['ECR (Dom)', 'Ant. Deltoid (Dom)', 'Triceps (Dom)'],
+      medium: ['FCR (Dom)', 'Post. Deltoid (Dom)', 'Pec. Major', 'Rotator Cuff (Dom)', 'Quadriceps (both)'],
+      low: ['Biceps (Dom)', 'Serratus (Dom)', 'Obliques', 'Erector Spinae', 'Gastrocnemius', 'Glutes']
+    },
+    muscles: {
+      'ant-deltoid-r': 'high', 'ant-deltoid-l': null,
+      'pec-major': 'medium',
+      'biceps-r': 'low', 'biceps-l': null,
+      'forearm-flex-r': 'medium', 'forearm-flex-l': null,
+      'serratus-r': 'low', 'serratus-l': null,
+      'rect-abdominis': 'low',
+      'obliques-r': 'low', 'obliques-l': 'low',
+      'hip-flex-r': 'low', 'hip-flex-l': 'low',
+      'quad-r': 'medium', 'quad-l': 'medium',
+      'adductors-r': 'low', 'adductors-l': 'low',
+      'post-deltoid-r': 'medium', 'post-deltoid-l': null,
+      'trap-upper': 'low', 'trap-lower': 'low',
+      'rotator-cuff-r': 'medium', 'rotator-cuff-l': null,
+      'lat-dorsi-r': 'low', 'lat-dorsi-l': null,
+      'triceps-r': 'high', 'triceps-l': null,
+      'forearm-ext-r': 'high', 'forearm-ext-l': null,
+      'erector-spinae': 'low',
+      'glutes-r': 'low', 'glutes-l': 'low',
+      'glute-med-r': 'low', 'glute-med-l': 'low',
+      'hamstrings-r': 'low', 'hamstrings-l': 'low',
+      'gastro-r': 'low', 'gastro-l': 'low',
+    }
+  },
+
+  volley_bh: {
+    name: 'Backhand Volley',
+    desc: 'The backhand volley demands greater triceps activation than the forehand due to greater elbow extension in the punching motion. Chow et al. (1999) found triceps was "clearly greater" in backhand trials across stroke, pushing, backswing, and forward swing phases — attributed to simultaneous shoulder adduction and medial rotation. PCM was significantly lower in the backhand vs. forehand forward swing (p=0.037). Chow et al. (2007) confirmed the same pre/post-impact hierarchy applies: posterior deltoid and ECR dominate, but at lower absolute levels than the forehand. Tai et al. (2022) found drive volleys require especially high ECR and triceps activation on the trailing arm due to the shortened backswing.',
+    keys: {
+      high: ['ECR (Dom)', 'Triceps (Dom)', 'Post. Deltoid (Dom)', 'Rotator Cuff (Dom)'],
+      medium: ['FCR (Dom)', 'Biceps (Dom)', 'Quadriceps (both)'],
+      low: ['Ant. Deltoid (Dom)', 'Pec. Major', 'Obliques', 'Erector Spinae', 'Serratus (Dom)']
+    },
+    muscles: {
+      'ant-deltoid-r': 'low', 'ant-deltoid-l': null,
+      'pec-major': 'low',
+      'biceps-r': 'medium', 'biceps-l': null,
+      'forearm-flex-r': 'medium', 'forearm-flex-l': null,
+      'serratus-r': 'low', 'serratus-l': null,
+      'rect-abdominis': 'low',
+      'obliques-r': 'low', 'obliques-l': 'low',
+      'hip-flex-r': 'low', 'hip-flex-l': 'low',
+      'quad-r': 'medium', 'quad-l': 'medium',
+      'adductors-r': 'low', 'adductors-l': 'low',
+      'post-deltoid-r': 'high', 'post-deltoid-l': null,
+      'trap-upper': 'low', 'trap-lower': 'low',
+      'rotator-cuff-r': 'high', 'rotator-cuff-l': null,
+      'lat-dorsi-r': 'low', 'lat-dorsi-l': null,
+      'triceps-r': 'high', 'triceps-l': null,
+      'forearm-ext-r': 'high', 'forearm-ext-l': null,
+      'erector-spinae': 'low',
+      'glutes-r': 'low', 'glutes-l': 'low',
+      'glute-med-r': 'low', 'glute-med-l': 'low',
+      'hamstrings-r': 'low', 'hamstrings-l': 'low',
+      'gastro-r': 'low', 'gastro-l': 'low',
+    }
+  },
+
+  crouched: {
+    name: 'Ready / Crouched Position',
+    desc: 'The athletic ready position requires sustained isometric (or quasi-isometric) activation of the lower body to hold a low center of gravity with the weight on the balls of the feet. Chow et al. (1999) found the erector spinae is most active during the ready phase as players lean forward slightly, moving the line of gravity toward the toes—making forward movement easier to initiate. Upper body activation is minimal: deltoids and trapezius simply hold the arms in a ready position.',
+    keys: {
+      high: ['Quadriceps (both)', 'Glutes (both)', 'Gastrocnemius (both)', 'Erector Spinae'],
+      medium: ['Hamstrings (both)', 'Adductors', 'Hip Flexors', 'Rect. Abdominis', 'Upper Trapezius'],
+      low: ['Obliques', 'Ant. Deltoid', 'Post. Deltoid', 'Serratus', 'Glut. Medius']
+    },
+    muscles: {
+      'ant-deltoid-r': 'low', 'ant-deltoid-l': 'low',
+      'pec-major': null,
+      'biceps-r': null, 'biceps-l': null,
+      'forearm-flex-r': null, 'forearm-flex-l': null,
+      'serratus-r': 'low', 'serratus-l': 'low',
+      'rect-abdominis': 'medium',
+      'obliques-r': 'low', 'obliques-l': 'low',
+      'hip-flex-r': 'medium', 'hip-flex-l': 'medium',
+      'quad-r': 'high', 'quad-l': 'high',
+      'adductors-r': 'medium', 'adductors-l': 'medium',
+      'post-deltoid-r': 'low', 'post-deltoid-l': 'low',
+      'trap-upper': 'medium', 'trap-lower': 'low',
+      'rotator-cuff-r': null, 'rotator-cuff-l': null,
+      'lat-dorsi-r': null, 'lat-dorsi-l': null,
+      'triceps-r': null, 'triceps-l': null,
+      'forearm-ext-r': null, 'forearm-ext-l': null,
+      'erector-spinae': 'high',
+      'glutes-r': 'high', 'glutes-l': 'high',
+      'glute-med-r': 'low', 'glute-med-l': 'low',
+      'hamstrings-r': 'medium', 'hamstrings-l': 'medium',
+      'gastro-r': 'high', 'gastro-l': 'high',
+    }
+  },
+
+  moving: {
+    name: 'Moving / Footwork (Split-Step)',
+    desc: 'Lateral movement and split-steps demand explosive lower body activation. The support leg gastrocnemius activates more strongly than the lead leg during jump-landing. Gluteus medius is critical for lateral push-off stability. Hip flexors drive leg recovery. Adductors provide medial control during lateral lunges. Core fires bilaterally to stabilize the trunk during rapid directional change. Upper body contributes little—arms swing with momentum for balance.',
+    keys: {
+      high: ['Quadriceps (both)', 'Glutes (both)', 'Gluteus Medius (both)', 'Hamstrings (both)', 'Gastrocnemius (both)', 'Hip Flexors (both)', 'Adductors (both)'],
+      medium: ['Erector Spinae', 'Obliques (both)', 'Rect. Abdominis'],
+      low: ['Upper Trapezius', 'Ant. Deltoid']
+    },
+    muscles: {
+      'ant-deltoid-r': 'low', 'ant-deltoid-l': 'low',
+      'pec-major': null,
+      'biceps-r': null, 'biceps-l': null,
+      'forearm-flex-r': null, 'forearm-flex-l': null,
+      'serratus-r': null, 'serratus-l': null,
+      'rect-abdominis': 'medium',
+      'obliques-r': 'medium', 'obliques-l': 'medium',
+      'hip-flex-r': 'high', 'hip-flex-l': 'high',
+      'quad-r': 'high', 'quad-l': 'high',
+      'adductors-r': 'high', 'adductors-l': 'high',
+      'post-deltoid-r': null, 'post-deltoid-l': null,
+      'trap-upper': 'low', 'trap-lower': null,
+      'rotator-cuff-r': null, 'rotator-cuff-l': null,
+      'lat-dorsi-r': null, 'lat-dorsi-l': null,
+      'triceps-r': null, 'triceps-l': null,
+      'forearm-ext-r': null, 'forearm-ext-l': null,
+      'erector-spinae': 'medium',
+      'glutes-r': 'high', 'glutes-l': 'high',
+      'glute-med-r': 'high', 'glute-med-l': 'high',
+      'hamstrings-r': 'high', 'hamstrings-l': 'high',
+      'gastro-r': 'high', 'gastro-l': 'high',
+    }
+  }
+};
+
+// Reset all muscles to inactive
+function resetMuscles() {
+  document.querySelectorAll('.muscle').forEach(el => {
+    el.setAttribute('fill', COLORS[null]);
+  });
+}
+
+function setScenario(key, btnEl) {
+  const scenario = scenarios[key];
+  resetMuscles();
+
+  // Apply colors from muscle map
+  for (const [muscleKey, level] of Object.entries(scenario.muscles)) {
+    const svgIds = MUSCLE_MAP[muscleKey];
+    if (!svgIds) continue;
+    const color = level ? COLORS[level] : COLORS[null];
+    svgIds.forEach(svgId => {
+      const el = document.getElementById(svgId);
+      if (el) el.setAttribute('fill', color);
+    });
+  }
+
+  // Update tabs
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+
+  // Update notes
+  document.getElementById('notes-title').textContent = scenario.name;
+  document.getElementById('notes-desc').textContent = scenario.desc;
+
+  // Update key muscle tags
+  ['primary','secondary','minor'].forEach((level, i) => {
+    const key2 = ['high','medium','low'][i];
+    const container = document.getElementById(`tags-${level}`);
+    container.innerHTML = '';
+    (scenario.keys[key2] || []).forEach(name => {
+      const tag = document.createElement('span');
+      tag.className = `muscle-tag ${level}`;
+      tag.textContent = name;
+      container.appendChild(tag);
+    });
+  });
+}
+
+// Tooltip
+const tooltip = document.getElementById('tooltip');
+const LEVEL_LABELS = { high: 'Primary mover (>50% MVC)', medium: 'Secondary / stabilizer (25–50%)', low: 'Minor / postural (<25%)', null: 'Inactive' };
+
+document.querySelectorAll('.muscle').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    const svgId = el.id;
+    const muscleName = el.getAttribute('data-name');
+    // Find logical key for this element
+    let logicalKey = null;
+    for (const [lk, ids] of Object.entries(MUSCLE_MAP)) {
+      if (ids.includes(svgId)) { logicalKey = lk; break; }
+    }
+    const currentKey = document.querySelector('.tab-btn.active')?.dataset?.key;
+    let level = null;
+    // Find current scenario
+    for (const [sk, sv] of Object.entries(scenarios)) {
+      if (document.querySelector(`.tab-btn.active`)?.textContent.trim() === sv.name ||
+          sv.name === document.getElementById('notes-title').textContent) {
+        level = sv.muscles[logicalKey];
+        break;
+      }
+    }
+    const levelLabel = LEVEL_LABELS[level] || LEVEL_LABELS[null];
+    tooltip.innerHTML = `<strong>${muscleName}</strong><br><span style="color:#f9c74f">${levelLabel}</span>`;
+    tooltip.style.display = 'block';
+  });
+  el.addEventListener('mousemove', e => {
+    tooltip.style.left = (e.clientX + 14) + 'px';
+    tooltip.style.top = (e.clientY - 10) + 'px';
+  });
+  el.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+});
+
+// Initialize with forehand
+setScenario('forehand', document.querySelector('.tab-btn'));
+</script>
+</body>
+</html>
