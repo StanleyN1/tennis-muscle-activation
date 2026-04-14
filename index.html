@@ -585,11 +585,14 @@ header p { font-size: 12px; color: #a8c0d4; margin-top: 5px; }
 
 <!-- CITATIONS SECTION -->
 <div class="citations-section">
-  <h2>Research Sources &amp; Key Findings</h2>
-  <div class="citation-grid">
+  <h2>Research Sources &amp; Key Findings — <span id="cit-scenario-label">Forehand Groundstroke</span></h2>
+  <div id="cit-empty" style="display:none;background:white;border-radius:12px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,0.07);color:#778;font-size:13px;">
+    No stroke-specific EMG study in this dataset covers this position directly. The diagram data is inferred from general athletic stance literature and from the ready-phase observations reported in Chow et al. (1999).
+  </div>
+  <div class="citation-grid" id="cit-grid">
 
     <!-- Card 1: Chow 1999 Volley -->
-    <div class="citation-card volley-paper">
+    <div class="citation-card volley-paper" data-cit-id="1">
       <div class="citation-ref">[1] Chow JW, Carlton LG, Lim Y-T, Shim J-H, Chae W-S, Kuenster AF (1999)</div>
       <div class="citation-journal">Muscle activation during the tennis volley. <em>Medicine &amp; Science in Sports &amp; Exercise</em>, 31(6):846–854.</div>
       <div class="citation-doi"><a href="https://pubmed.ncbi.nlm.nih.gov/10378912/" target="_blank">PMID 10378912</a></div>
@@ -605,7 +608,7 @@ header p { font-size: 12px; color: #a8c0d4; margin-top: 5px; }
     </div>
 
     <!-- Card 2: Chow 2007 Pre/Post Impact -->
-    <div class="citation-card volley-paper">
+    <div class="citation-card volley-paper" data-cit-id="2">
       <div class="citation-ref">[2] Chow JW, Tillman MD, Knudson DV, Andrew DPS (2007)</div>
       <div class="citation-journal">Pre- and post-impact muscle activation in the tennis volley. <em>British Journal of Sports Medicine</em>, 41(11):754–759.</div>
       <div class="citation-doi"><a href="https://doi.org/10.1136/bjsm.2007.037184" target="_blank">doi:10.1136/bjsm.2007.037184</a></div>
@@ -626,7 +629,7 @@ header p { font-size: 12px; color: #a8c0d4; margin-top: 5px; }
     </div>
 
     <!-- Card 3: Kibler 2007 Serve -->
-    <div class="citation-card serve-paper">
+    <div class="citation-card serve-paper" data-cit-id="3">
       <div class="citation-ref">[3] Kibler WB, Chandler TJ, Shapiro R, Conuel M (2007)</div>
       <div class="citation-journal">Muscle activation in coupled scapulohumeral motions in the high performance tennis serve. <em>British Journal of Sports Medicine</em>, 41(11):745–749.</div>
       <div class="citation-doi"><a href="https://doi.org/10.1136/bjsm.2007.037333" target="_blank">doi:10.1136/bjsm.2007.037333</a></div>
@@ -648,7 +651,7 @@ header p { font-size: 12px; color: #a8c0d4; margin-top: 5px; }
     </div>
 
     <!-- Card 4: Ryu 1988 Shoulder -->
-    <div class="citation-card shoulder-paper">
+    <div class="citation-card shoulder-paper" data-cit-id="4">
       <div class="citation-ref">[4] Ryu RKN, McCormick J, Jobe FW, Moynes DR, Antonelli DJ (1988)</div>
       <div class="citation-journal">An electromyographic analysis of shoulder function in tennis players. <em>American Journal of Sports Medicine</em>, 16(5):481–485.</div>
       <div class="citation-doi"><a href="https://doi.org/10.1177/036354658801600509" target="_blank">doi:10.1177/036354658801600509</a></div>
@@ -662,7 +665,7 @@ header p { font-size: 12px; color: #a8c0d4; margin-top: 5px; }
     </div>
 
     <!-- Card 5: Chow 2003 Trunk Serve -->
-    <div class="citation-card trunk-paper">
+    <div class="citation-card trunk-paper" data-cit-id="5">
       <div class="citation-ref">[5] Chow JW, Shim JH, Lim YT (2003)</div>
       <div class="citation-journal">Lower trunk muscle activity during the tennis serve. <em>Journal of Science and Medicine in Sport</em>, 6(4):512–518.</div>
       <div class="citation-doi"><a href="https://doi.org/10.1016/s1440-2440(03)80276-1" target="_blank">PMID 14723400 · doi:10.1016/s1440-2440(03)80276-1</a></div>
@@ -676,7 +679,7 @@ header p { font-size: 12px; color: #a8c0d4; margin-top: 5px; }
     </div>
 
     <!-- Card 6: Rogowski 2011 Forehand -->
-    <div class="citation-card forehand-paper">
+    <div class="citation-card forehand-paper" data-cit-id="6">
       <div class="citation-ref">[6] Rogowski I, Rouffet D, Lambalot F, Brosseau O, Hautier C (2011)</div>
       <div class="citation-journal">Trunk and upper limb muscle activation during flat and topspin forehand drives in young tennis players. <em>Journal of Applied Biomechanics</em>, 27(1):15–21.</div>
       <div class="citation-doi"><a href="https://doi.org/10.1123/jab.27.1.15" target="_blank">doi:10.1123/jab.27.1.15</a></div>
@@ -690,7 +693,7 @@ header p { font-size: 12px; color: #a8c0d4; margin-top: 5px; }
     </div>
 
     <!-- Card 7: Tai 2022 Drive Volley -->
-    <div class="citation-card volley-paper">
+    <div class="citation-card volley-paper" data-cit-id="7">
       <div class="citation-ref">[7] Tai M-L, Yang C-J, Tang W-T, Elliott B, Chang K-L (2022)</div>
       <div class="citation-journal">Upper extremity muscle activation during drive volley and groundstroke for two-handed backhand of female tennis players. <em>Journal of Sports Science &amp; Medicine</em>, 21(4):586–594.</div>
       <div class="citation-doi"><a href="https://doi.org/10.52082/jssm.2022.586" target="_blank">doi:10.52082/jssm.2022.586</a></div>
@@ -703,7 +706,7 @@ header p { font-size: 12px; color: #a8c0d4; margin-top: 5px; }
     </div>
 
     <!-- Card 8: Dong 2024 Grip Effects -->
-    <div class="citation-card grip-paper">
+    <div class="citation-card grip-paper" data-cit-id="8">
       <div class="citation-ref">[8] Dong R, Su X, Li S, Ni X, Liu Y (2024)</div>
       <div class="citation-journal">Characteristics, relationships, and differences in muscle activity and impact load attenuation during tennis forehand stroke with different grips. <em>Life (Basel)</em>, 14(11):1433.</div>
       <div class="citation-doi"><a href="https://doi.org/10.3390/life14111433" target="_blank">doi:10.3390/life14111433</a></div>
@@ -770,6 +773,7 @@ const MUSCLE_MAP = {
 const scenarios = {
   forehand: {
     name: 'Forehand Groundstroke',
+    citations: [4, 6, 8],
     desc: 'The forehand is driven by a proximal-to-distal kinetic chain: leg push-off → bilateral core rotation (obliques + erector spinae) → shoulder acceleration (pec major + anterior deltoid + subscapularis) → elbow extension (triceps) → wrist extension (ECR). Ryu et al. (1988) identified subscapularis, pectoralis major, and serratus anterior as showing greatest activity. Rogowski et al. (2011) found skilled players recruit shoulder muscles more economically than novices when adding topspin — higher EMG does not mean better performance.',
     keys: {
       high: ['ECR (Dom)', 'Triceps (Dom)', 'Ant. Deltoid (Dom)', 'Pec. Major', 'Lat. Dorsi (Dom)', 'Obliques (both)', 'Erector Spinae', 'Quadriceps', 'Glutes', 'Hamstrings'],
@@ -803,6 +807,7 @@ const scenarios = {
 
   backhand1h: {
     name: 'One-Handed Backhand',
+    citations: [4],
     desc: 'The one-handed backhand relies primarily on the posterior shoulder and rotator cuff. The triceps extends the elbow in a punching/driving motion, the posterior deltoid controls the arm through external rotation, and the infraspinatus/supraspinatus (rotator cuff) stabilize the glenohumeral joint. Ryu et al. (1988) identified middle deltoid, supraspinatus, and infraspinatus as most active during backhand acceleration and follow-through. Less trunk rotation than the two-handed version — power comes more from arm and shoulder than from core rotation. The one-handed backhand places higher lateral epicondyle stress on wrist extensors than the two-handed variant.',
     keys: {
       high: ['ECR (Dom)', 'Triceps (Dom)', 'Post. Deltoid (Dom)', 'Rotator Cuff (Dom)', 'Quadriceps', 'Glutes', 'Hamstrings'],
@@ -836,6 +841,7 @@ const scenarios = {
 
   backhand2h: {
     name: 'Two-Handed Backhand',
+    citations: [4, 7],
     desc: 'The two-handed backhand generates power through extensive bilateral trunk rotation—both sets of obliques and the erector spinae fire heavily (>50% MVC). The non-dominant left arm plays an active role, with the biceps and wrist flexors (FCR) of the non-dominant side showing high activation comparable to the dominant arm. This bilateral load distribution reduces stress on the wrist extensors compared to the one-handed backhand.',
     keys: {
       high: ['ECR (Dom)', 'Triceps (Dom)', 'Post. Deltoid (Dom)', 'FCR (Non-dom)', 'Biceps (Non-dom)', 'Obliques (both)', 'Erector Spinae', 'Quadriceps', 'Glutes', 'Hamstrings'],
@@ -869,6 +875,7 @@ const scenarios = {
 
   serve: {
     name: 'Serve',
+    citations: [3, 4, 5],
     desc: 'The serve produces the highest peak muscle activation of all strokes. Kibler et al. (2007) established the precise proximal-to-distal onset sequence: serratus anterior (−287 ms, 74% of serve motion) → anterior deltoid (−250 ms) → upper trapezius (−234 ms) → teres minor (−215 ms) → lower trapezius (−120 ms) → supraspinatus (−104 ms) → infraspinatus fires post-impact (+47 ms) for eccentric deceleration only. Chow et al. (2003) confirmed no major differences in trunk muscle activation across flat, topspin, and slice serves, and that bilateral co-activation of lower trunk muscles stabilizes the lumbar spine during the arch-back phase.',
     keys: {
       high: ['Serratus Ant. (Dom)', 'Upper Trapezius', 'Lower Trapezius', 'Rotator Cuff (Dom)', 'Ant. Deltoid (Dom)', 'Post. Deltoid (Dom)', 'Triceps (Dom)', 'Pec. Major', 'Lat. Dorsi (Dom)', 'Obliques (both)', 'Erector Spinae', 'Rect. Abdominis', 'Quadriceps', 'Glutes', 'Hamstrings', 'Gastrocnemius'],
@@ -902,6 +909,7 @@ const scenarios = {
 
   volley_fh: {
     name: 'Forehand Volley',
+    citations: [1, 2],
     desc: 'The forehand volley is primarily an upper body stroke with substantially lower core and leg activation than groundstrokes. Chow et al. (2007) quantified the pre/post-impact split: anterior/middle deltoid peaks pre-impact at 61.7% MVC (positioning the racket), then ECR takes over post-impact at 53.9% MVC (wrist stabilization and shock absorption). Grip tightening via FCR/ECR peaks just before ball contact (Chow et al. 1999). Ball speed increases activation ~12% pre-impact and ~10% post-impact as players anticipate harder shots.',
     keys: {
       high: ['ECR (Dom)', 'Ant. Deltoid (Dom)', 'Triceps (Dom)'],
@@ -935,6 +943,7 @@ const scenarios = {
 
   volley_bh: {
     name: 'Backhand Volley',
+    citations: [1, 2, 7],
     desc: 'The backhand volley demands greater triceps activation than the forehand due to greater elbow extension in the punching motion. Chow et al. (1999) found triceps was "clearly greater" in backhand trials across stroke, pushing, backswing, and forward swing phases — attributed to simultaneous shoulder adduction and medial rotation. PCM was significantly lower in the backhand vs. forehand forward swing (p=0.037). Chow et al. (2007) confirmed the same pre/post-impact hierarchy applies: posterior deltoid and ECR dominate, but at lower absolute levels than the forehand. Tai et al. (2022) found drive volleys require especially high ECR and triceps activation on the trailing arm due to the shortened backswing.',
     keys: {
       high: ['ECR (Dom)', 'Triceps (Dom)', 'Post. Deltoid (Dom)', 'Rotator Cuff (Dom)'],
@@ -968,6 +977,7 @@ const scenarios = {
 
   crouched: {
     name: 'Ready / Crouched Position',
+    citations: [1],
     desc: 'The athletic ready position requires sustained isometric (or quasi-isometric) activation of the lower body to hold a low center of gravity with the weight on the balls of the feet. Chow et al. (1999) found the erector spinae is most active during the ready phase as players lean forward slightly, moving the line of gravity toward the toes—making forward movement easier to initiate. Upper body activation is minimal: deltoids and trapezius simply hold the arms in a ready position.',
     keys: {
       high: ['Quadriceps (both)', 'Glutes (both)', 'Gastrocnemius (both)', 'Erector Spinae'],
@@ -1001,6 +1011,7 @@ const scenarios = {
 
   moving: {
     name: 'Moving / Footwork (Split-Step)',
+    citations: [],
     desc: 'Lateral movement and split-steps demand explosive lower body activation. The support leg gastrocnemius activates more strongly than the lead leg during jump-landing. Gluteus medius is critical for lateral push-off stability. Hip flexors drive leg recovery. Adductors provide medial control during lateral lunges. Core fires bilaterally to stabilize the trunk during rapid directional change. Upper body contributes little—arms swing with momentum for balance.',
     keys: {
       high: ['Quadriceps (both)', 'Glutes (both)', 'Gluteus Medius (both)', 'Hamstrings (both)', 'Gastrocnemius (both)', 'Hip Flexors (both)', 'Adductors (both)'],
@@ -1040,6 +1051,29 @@ function resetMuscles() {
   });
 }
 
+function filterCitations(scenario) {
+  const ids = scenario.citations || [];
+  const cards = document.querySelectorAll('#cit-grid .citation-card');
+  const empty = document.getElementById('cit-empty');
+  const grid  = document.getElementById('cit-grid');
+  const label = document.getElementById('cit-scenario-label');
+
+  label.textContent = scenario.name;
+
+  if (ids.length === 0) {
+    grid.style.display  = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+  grid.style.display  = '';
+  empty.style.display = 'none';
+
+  cards.forEach(card => {
+    const id = parseInt(card.getAttribute('data-cit-id'), 10);
+    card.style.display = ids.includes(id) ? '' : 'none';
+  });
+}
+
 function setScenario(key, btnEl) {
   const scenario = scenarios[key];
   resetMuscles();
@@ -1062,6 +1096,9 @@ function setScenario(key, btnEl) {
   // Update notes
   document.getElementById('notes-title').textContent = scenario.name;
   document.getElementById('notes-desc').textContent = scenario.desc;
+
+  // Filter citation cards
+  filterCitations(scenario);
 
   // Update key muscle tags
   ['primary','secondary','minor'].forEach((level, i) => {
